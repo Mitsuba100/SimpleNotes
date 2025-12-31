@@ -1,12 +1,12 @@
+
+
 plugins {
     alias(libs.plugins.android.application)
 }
 
 android {
     namespace = "net.stuple.simplenotes"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "net.stuple.simplenotes"
@@ -37,7 +37,7 @@ android {
     sourceSets {
         getByName("main") {
             assets {
-                srcDirs("src\\main\\assets", "src\\main\\assets")
+                srcDirs("src/main/assets")
             }
         }
     }
@@ -49,7 +49,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.preference)
     testImplementation(libs.junit)
+    implementation(libs.okhttp)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 }

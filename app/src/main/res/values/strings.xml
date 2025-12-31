@@ -43,4 +43,30 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+    <string name="Simple_Notes">Simple Notes</string>
+    <string name="Settings">Settings</string>
+    <string name="Version">Version: Alpha 1</string>
+
+    <string name="update_alert_update_available">App update available</string>
+    <string name="update_alert_text">A new version for Simple Notes was published!</string>
+    <string name="update_alert_current_version">Installed Version: %1$s</string>
+    <string name="update_alert_latest_version">Latest Version: %1$s</string>
+    <string name="update_alert_option_show_version">Show new version in browser</string>
+    <string name="update_alert_option_dont_show_again">Don\'t show again</string>
+    <string name="update_alert_option_later">Later</string>
+    <string name="update_activite_update_check">Automatic update check</string>
+
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <string name="sync_title">Sync periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
