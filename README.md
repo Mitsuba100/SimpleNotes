@@ -12,3 +12,6 @@ Version 2.0: More Features :
 3. renameing files  
 
 Version 3.0: [Not available]
+
+
+**The Update Checker is From Chase6477 thx :>**
