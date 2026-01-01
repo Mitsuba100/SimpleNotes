@@ -1,3 +1,5 @@
+# Simple Notes
+
 Simple Notes the newest the greatest Note taking App **without any AI** and no Internet connection is needed (Exept for update checking)  
 
 Simple Notes saves your files in the Markdown (aka .md) format  
