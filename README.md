@@ -1,3 +1,4 @@
+# Status: Developenters not developing 
 # Simple Notes
 
 Simple Notes the newest the greatest Note taking App **without any AI** and no Internet connection is needed (Exept for update checking)  
@@ -15,4 +16,5 @@ Version 1.2: More Features :
 Version 1.3: [Not available]
 
 
-**The Update Checker is From Chase6477 thx :>**
+**The Update Checker is From Chase6477 thx :>**  
+
