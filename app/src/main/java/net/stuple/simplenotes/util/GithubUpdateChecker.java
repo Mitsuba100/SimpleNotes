@@ -23,7 +23,7 @@ import okhttp3.Response;
 
 public class GithubUpdateChecker {
 
-    private static SharedPreferences getMainPreference(Context context) {
+    public static SharedPreferences getMainPreference(Context context) {
         return context.getSharedPreferences("main_preference", Context.MODE_PRIVATE);
     }
 
@@ -41,7 +41,7 @@ public class GithubUpdateChecker {
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
+                // If internet fails, continue to the app
                 context.runOnUiThread(() -> listener.onFinishedUpdateRequest(false));
             }
 
@@ -96,6 +96,5 @@ public class GithubUpdateChecker {
 
     public interface OnFinishedUpdateRequest {
         void onFinishedUpdateRequest(boolean exitActivity);
-
     }
 }

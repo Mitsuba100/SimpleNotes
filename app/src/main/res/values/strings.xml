@@ -46,7 +46,7 @@
 
     <string name="Simple_Notes">Simple Notes</string>
     <string name="Settings">Settings</string>
-    <string name="Version">Version: Alpha 1</string>
+    <string name="Version">1.1</string>
 
     <string name="update_alert_update_available">App update available</string>
     <string name="update_alert_text">A new version for Simple Notes was published!</string>
