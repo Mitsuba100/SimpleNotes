@@ -1,4 +1,4 @@
-# Status: Developenters not developing 
+# Status: No development happening at this Time
 # Simple Notes
 
 Simple Notes the newest the greatest Note taking App **without any AI** and no Internet connection is needed (Exept for update checking)  
