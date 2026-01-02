@@ -6,15 +6,20 @@
     app:startDestination="@id/noteFragment">
 
     <fragment
+        android:id="@+id/settingsFragment"
+        android:name="net.stuple.simplenotes.SettingsFragment"
+        android:label="@string/Settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_noteFragment"
+            app:destination="@id/noteFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/noteFragment"
         android:name="net.stuple.simplenotes.NoteFragment"
-        android:label="@string/Simple_Notes" >
+        android:label="Simple Notes"
+        tools:layout="@layout/note_fragment" >
         <action
             android:id="@+id/action_noteFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="net.stuple.simplenotes.SettingsFragment"
-        android:label="@string/Settings" />
 </navigation>

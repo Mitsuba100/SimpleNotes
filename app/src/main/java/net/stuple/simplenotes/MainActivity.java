@@ -1,59 +1,67 @@
 package net.stuple.simplenotes;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import net.stuple.simplenotes.databinding.ActivityMainBinding;
 
-import java.io.File;
-
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
-    public String[] files = {"note1.md"};
-    public int whatfile = 0;
-    private File folder;
+
     private AppBarConfiguration appBarConfiguration;
-    private NavController navController;
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GithubUpdateChecker.checkForUpdate(this, exitActivity -> start());
 
+        GithubUpdateChecker.checkForUpdate(this, new GithubUpdateChecker.onFinishedUpdateRequest() {
+            @Override
+            public void onFinishedUpdateRequest(boolean exit) {
+                if (!exit) {
+                    start();
+                }
+            }
+        });
     }
-    private void start() {
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        binding.textView4.setText("Note: "+files[whatfile]);
-        setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(
 
-                navController.getGraph().getId()
-        ).build();
+    public void start() {
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        setSupportActionBar(binding.toolbar);
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        NavController navController = navHostFragment.getNavController();
+
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        navController.addOnDestinationChangedListener((navController1, destination, bundle) -> {
+            if (destination.getId() == R.id.settingsFragment) {
+                binding.floatingActionButton2.setVisibility(View.GONE);
+            } else {
+                binding.floatingActionButton2.setVisibility(View.VISIBLE); // ist so weil ich davor das problem hatte wo es gecrashed ist weil der Button noch immer da war
+            }
+        });
 
-//        SharedPreferences mainPrefs = getSharedPreferences("main_preference", Context.MODE_PRIVATE);
-//        CheckBox checkBox = findViewById(R.id.automaticUpdateCheckBox);
-//        checkBox.setChecked(mainPrefs.getBoolean("show_update_alert", true));
-//        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> mainPrefs.edit().putBoolean("show_update_alert", isChecked).apply());
+        binding.floatingActionButton2.setOnClickListener(v -> {
+            if (navController.getCurrentDestination().getId() == R.id.noteFragment) {
+                navController.navigate(R.id.action_noteFragment_to_settingsFragment);
+            }
+        });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        NavController navController = navHostFragment.getNavController();
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
 }
