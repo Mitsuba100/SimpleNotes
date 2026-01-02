@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="net.stuple.simplenotes.SettingsFragment"
+        android:name="net.stuple.simplenotes.fragments.SettingsFragment"
         android:label="@string/Settings" >
         <action
             android:id="@+id/action_settingsFragment_to_noteFragment"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/noteFragment"
-        android:name="net.stuple.simplenotes.NoteFragment"
+        android:name="net.stuple.simplenotes.fragments.NoteFragment"
         android:label="Simple Notes"
         tools:layout="@layout/note_fragment" >
         <action

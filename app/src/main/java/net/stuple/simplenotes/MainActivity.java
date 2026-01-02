@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import net.stuple.simplenotes.databinding.ActivityMainBinding;
+import net.stuple.simplenotes.util.GithubUpdateChecker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,15 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        GithubUpdateChecker.checkForUpdate(this, new GithubUpdateChecker.onFinishedUpdateRequest() {
-            @Override
-            public void onFinishedUpdateRequest(boolean exit) {
-                if (!exit) {
-                    start();
-                }
-            }
-        });
+        GithubUpdateChecker.checkForUpdate(this, c -> start());
     }
 
     public void start() {
