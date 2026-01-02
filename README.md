@@ -8,13 +8,15 @@ Simple Notes saves your files in the Markdown (aka .md) format
 **Update plan / future**  
 Version 1.0: the most basic note taking app.  **Completed**  
 Version 1.1: Read and Write Improvement.   **Completed**  
-Version 1.2: More Features : 
-1. multiple files (Creating them too)
-2. deleting files
-3. renameing files  
+Version 1.2: More Features : multiple files (Creating them too)
+
 
 Version 1.3: [Not available]
 
 
 **The Update Checker is From Chase6477 thx :>**  
 
+<!--
+1.3. deleting files
+1.4. renameing files  
+-->
