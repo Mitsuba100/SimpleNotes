@@ -18,12 +18,8 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import net.stuple.simplenotes.SettingsFragment;
-import net.stuple.simplenotes.databinding.SettingsFragmentBinding;
 
 public class GithubUpdateChecker {
-    public String currentVersion = "1.1";
-
 
     public static SharedPreferences getMainPreference(Context context) {
         return context.getSharedPreferences("main_preference", Context.MODE_PRIVATE);
@@ -43,7 +39,7 @@ public class GithubUpdateChecker {
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
+                // If internet fails, continue to the app
                 context.runOnUiThread(() -> listener.onFinishedUpdateRequest(false));
             }
 
@@ -98,6 +94,5 @@ public class GithubUpdateChecker {
 
     public interface onFinishedUpdateRequest {
         void onFinishedUpdateRequest(boolean exitActivity);
-
     }
 }
