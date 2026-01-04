@@ -1,4 +1,4 @@
-package net.stuple.simplenotes;
+package net.stuple.simplenotes.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,14 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
-
-import androidx.annotation.Nullable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import net.stuple.simplenotes.databinding.SettingsFragmentBinding;
-import net.stuple.simplenotes.*;
+
 public class SettingsFragment extends Fragment {
     public SettingsFragmentBinding binding;
 
@@ -36,7 +33,8 @@ public class SettingsFragment extends Fragment {
         checkBox.setChecked(mainPrefs.getBoolean("show_update_alert", true));
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> mainPrefs.edit().putBoolean("show_update_alert", isChecked).apply());
 
-        binding.textView3.setText(new StringBuilder().append("Version: "+ currentVersion).toString());
+
+        binding.textView3.setText(new StringBuilder().append("Version: " + currentVersion).toString());
         return binding.getRoot();
     }
 

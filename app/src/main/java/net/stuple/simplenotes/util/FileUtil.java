@@ -1,4 +1,4 @@
-package net.stuple.simplenotes;
+package net.stuple.simplenotes.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,16 +11,8 @@ public class FileUtil {
     private static final int BUFFER_SIZE = 1024;
 
     public static byte[] readFile(File file) throws IOException {
-        try (FileInputStream fis = new FileInputStream(file)) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[BUFFER_SIZE];
-            int bytesRead;
-
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                baos.write(buffer, 0, bytesRead);
-            }
-            return baos.toByteArray();
-        }
+        FileInputStream fis = new FileInputStream(file);
+        return readStream(fis);
     }
 
     public static byte[] readStream(InputStream is) throws IOException {

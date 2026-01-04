@@ -1,4 +1,4 @@
-package net.stuple.simplenotes;
+package net.stuple.simplenotes.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+
+import net.stuple.simplenotes.R;
 
 import java.io.IOException;
 
@@ -25,7 +27,7 @@ public class GithubUpdateChecker {
         return context.getSharedPreferences("main_preference", Context.MODE_PRIVATE);
     }
 
-    public static void checkForUpdate(Activity context, onFinishedUpdateRequest listener) {
+    public static void checkForUpdate(Activity context, OnFinishedUpdateRequest listener) {
 
         if (!getMainPreference(context).getBoolean("show_update_alert", true)) {
             listener.onFinishedUpdateRequest(false); // Continue if updates are disabled
@@ -49,7 +51,7 @@ public class GithubUpdateChecker {
                     String json = response.body().string();
                     String latestVersion = json.replaceAll(".*\"tag_name\"\\s*:\\s*\"([^\"]+)\".*", "$1");
 
-                    String currentVersion = "1.1";
+                    String currentVersion = "";
                     try {
                         PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                         currentVersion = pInfo.versionName;
@@ -92,7 +94,7 @@ public class GithubUpdateChecker {
         });
     }
 
-    public interface onFinishedUpdateRequest {
+    public interface OnFinishedUpdateRequest {
         void onFinishedUpdateRequest(boolean exitActivity);
     }
 }
