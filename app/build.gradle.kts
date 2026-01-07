@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.preference)
     implementation(libs.documentfile)
+    implementation(libs.legacy.support.v4)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     implementation(libs.okhttp)
     androidTestImplementation(libs.ext.junit)

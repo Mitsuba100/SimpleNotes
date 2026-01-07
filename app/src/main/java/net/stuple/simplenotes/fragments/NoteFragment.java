@@ -28,7 +28,7 @@ import java.io.IOException;
 public class NoteFragment extends Fragment {
     public String[] files = {"FirstNote.md"};
     public int whatfile = 0;
-    private Uri notesFolderUri;
+    public Uri notesFolderUri;
 
     private NoteFragmentBinding binding;
 
