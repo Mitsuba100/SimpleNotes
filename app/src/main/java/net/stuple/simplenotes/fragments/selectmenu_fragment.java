@@ -1,4 +1,4 @@
-package net.stuple.simplenotes;
+package net.stuple.simplenotes.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +8,10 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import net.stuple.simplenotes.R;
 import net.stuple.simplenotes.util.FileUtil;
 
 import java.io.IOException;
@@ -30,6 +33,8 @@ public class selectmenu_fragment extends Fragment {
     private Uri notesFolderUri;
     private ActivityResultLauncher<Uri> openDocumentTreeLauncher;
     private NavController navController;
+    private ListView myListView;
+    private String[] files = {};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,25 +52,10 @@ public class selectmenu_fragment extends Fragment {
 
                         notesFolderUri = uri;
                         Toast.makeText(getContext(), "Notes folder selected!", Toast.LENGTH_SHORT).show();
+                        updateFileList(); 
                     }
                 }
         );
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        String uriString = prefs.getString("notes_folder_uri", null);
-
-        if (uriString == null) {
-            openFolderPicker();
-        } else {
-            notesFolderUri = Uri.parse(uriString);
-            boolean hasPermission = requireContext().getContentResolver().getPersistedUriPermissions().stream()
-                    .anyMatch(p -> p.getUri().equals(notesFolderUri) && p.isReadPermission() && p.isWritePermission());
-
-            if (!hasPermission) {
-                Toast.makeText(getContext(), "Permission for notes folder lost. Please select it again.", Toast.LENGTH_LONG).show();
-                openFolderPicker();
-            }
-        }
     }
 
     @Nullable
@@ -78,6 +68,14 @@ public class selectmenu_fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = NavHostFragment.findNavController(this);
+        myListView = view.findViewById(R.id.listview);
+
+        myListView.setOnItemClickListener((parent, view1, position, id) -> {
+            String selectedFile = files[position];
+            Bundle bundle = new Bundle();
+            bundle.putString("filename", selectedFile);
+            navController.navigate(R.id.action_selectmenu_fragment_to_noteFragment, bundle);
+        });
 
         Button newNoteButton = view.findViewById(R.id.button);
         newNoteButton.setOnClickListener(v -> {
@@ -90,6 +88,23 @@ public class selectmenu_fragment extends Fragment {
         });
     }
 
+    public void updateFileList() {
+        if (getContext() == null) return;
+
+        // Always re-read the URI from preferences to handle changes from other fragments
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        String uriString = prefs.getString("notes_folder_uri", null);
+
+        if (uriString != null) {
+            notesFolderUri = Uri.parse(uriString);
+            files = FileUtil.refreshLocalFiles(requireContext(), notesFolderUri);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, files);
+            if (myListView != null) {
+                myListView.setAdapter(adapter);
+            }
+        }
+    }
+
     private void openFolderPicker() {
         Toast.makeText(getContext(), "Please select a folder to store your notes.", Toast.LENGTH_LONG).show();
         openDocumentTreeLauncher.launch(null);
@@ -97,7 +112,6 @@ public class selectmenu_fragment extends Fragment {
 
     private void showFileNameDialog() {
         final EditText input = new EditText(requireContext());
-        input.setHint("my_note_name");
 
         new AlertDialog.Builder(requireContext())
                 .setTitle("Create New Note")
@@ -121,5 +135,11 @@ public class selectmenu_fragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFileList(); 
     }
 }

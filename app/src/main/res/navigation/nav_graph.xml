@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectmenu_fragment"
-        android:name="net.stuple.simplenotes.selectmenu_fragment"
+        android:name="net.stuple.simplenotes.fragments.selectmenu_fragment"
         android:label="Note Selector"
         tools:layout="@layout/fragment_selectmenu_fragment" >
         <action

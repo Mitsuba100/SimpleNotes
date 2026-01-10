@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -74,7 +73,7 @@ public class NoteFragment extends Fragment {
         }
     }
 
-    private void openFolderPicker() {
+    public void openFolderPicker() {
         Toast.makeText(getContext(), "Please select the folder where you want to store your notes.", Toast.LENGTH_LONG).show();
         openDocumentTreeLauncher.launch(null);
     }
@@ -90,30 +89,27 @@ public class NoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Check if a filename was passed as an argument (from the selector or new note creation)
+        String argumentFileName = (getArguments() != null) ? getArguments().getString("filename") : null;
+
         if (notesFolderUri != null) {
-            loadNote(files[whatfile]);
+            if (argumentFileName != null) {
+                // If we have an argument, find its index in the refreshed list
+                refreshLocalFiles();
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].equals(argumentFileName)) {
+                        whatfile = i;
+                        break;
+                    }
+                }
+                loadNote(argumentFileName);
+            } else {
+                // Default fallback
+                loadNote(files[whatfile]);
+            }
         }
 
         binding.floatingActionButton.setOnClickListener(view1 -> saveNote(files[whatfile]));
-
-        binding.filename.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(getContext(), v);
-            popup.getMenu().add("New Note");
-            popup.getMenu().add("Select Note");
-
-            popup.setOnMenuItemClickListener(item -> {
-                String clickedTitle = item.getTitle().toString();
-                if (clickedTitle.equals("New Note")) {
-                    showFileNameDialog();
-                    return true;
-                } else if (clickedTitle.equals("Select Note")) {
-                    showFileSelectorDialog();
-                    return true;
-                }
-                return false;
-            });
-            popup.show();
-        });
     }
 
     private void loadNote(String fileName) {
@@ -171,7 +167,6 @@ public class NoteFragment extends Fragment {
 
     private void showFileNameDialog() {
         final EditText input = new EditText(requireContext());
-
 
         new AlertDialog.Builder(requireContext())
                 .setTitle("Create New Note")
