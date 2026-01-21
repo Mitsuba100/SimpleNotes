@@ -25,7 +25,7 @@ import net.stuple.simplenotes.util.FileUtil;
 import java.io.IOException;
 
 public class NoteFragment extends Fragment {
-    public String[] files = {"FirstNote.md"};
+    public static String[] files = {"FirstNote.md"};
     public int whatfile = 0;
     public Uri notesFolderUri;
 
@@ -142,7 +142,7 @@ public class NoteFragment extends Fragment {
         String userText = binding.textviewNoteContent.getText().toString();
         try {
             FileUtil.saveNote(requireContext(), notesFolderUri, fileName, userText);
-            Toast.makeText(requireContext(), "Note Saved! :D", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Note Saved!", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Log.e("NotesApp", "Save failed", e);
             Toast.makeText(requireContext(), "Error saving note.", Toast.LENGTH_SHORT).show();

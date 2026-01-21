@@ -1,6 +1,9 @@
 package net.stuple.simplenotes.util;
 
 import android.content.Context;
+import android.net.Uri;
+
+import net.stuple.simplenotes.fragments.NoteFragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,6 +45,7 @@ public class FileManagment {
             listener.onError("Failed to create file: " + e.getMessage());
         }
     }
+
 
     public interface onFileCreatedListener {
         void onSuccess(String fileName);

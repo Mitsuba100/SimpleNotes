@@ -38,8 +38,6 @@ public final class FileUtil {
         }
     }
 
-    // New SAF-based methods
-
     public static byte[] loadNote(Context context, Uri notesFolderUri, String fileName) throws IOException {
         DocumentFile notesDir = DocumentFile.fromTreeUri(context, notesFolderUri);
         DocumentFile noteFile = (notesDir != null) ? notesDir.findFile(fileName) : null;
@@ -49,7 +47,6 @@ public final class FileUtil {
                 return readStream(is);
             }
         } else {
-            // Fallback to assets for default note
             try (InputStream is = context.getAssets().open(fileName)) {
                 return readStream(is);
             }
@@ -78,7 +75,7 @@ public final class FileUtil {
     public static String[] refreshLocalFiles(Context context, Uri notesFolderUri) {
         DocumentFile notesDir = DocumentFile.fromTreeUri(context, notesFolderUri);
         if (notesDir == null || !notesDir.isDirectory()) {
-            return new String[]{"FirstNote.md"}; // Default
+            return new String[]{"FirstNote.md"};
         }
 
         ArrayList<String> fileList = new ArrayList<>();
@@ -91,7 +88,29 @@ public final class FileUtil {
         if (!fileList.isEmpty()) {
             return fileList.toArray(new String[0]);
         } else {
-            return new String[]{"FirstNote.md"}; // Default if folder is empty
+            return new String[]{"FirstNote.md"};
         }
+    }
+
+    public static boolean deleteNote(Context context, Uri notesFolderUri, String fileName) {
+        DocumentFile notesDir = DocumentFile.fromTreeUri(context, notesFolderUri);
+        if (notesDir != null) {
+            DocumentFile noteFile = notesDir.findFile(fileName);
+            if (noteFile != null && noteFile.exists()) {
+                return noteFile.delete();
+            }
+        }
+        return false;
+    }
+
+    public static boolean renameNote(Context context, Uri notesFolderUri, String oldName, String newName) {
+        DocumentFile notesDir = DocumentFile.fromTreeUri(context, notesFolderUri);
+        if (notesDir != null) {
+            DocumentFile noteFile = notesDir.findFile(oldName);
+            if (noteFile != null && noteFile.exists()) {
+                return noteFile.renameTo(newName);
+            }
+        }
+        return false;
     }
 }

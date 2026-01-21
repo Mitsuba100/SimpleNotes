@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -86,12 +87,72 @@ public class selectmenu_fragment extends Fragment {
                 openFolderPicker();
             }
         });
+
+        myListView.setOnItemLongClickListener((parent, view1, position, id) -> {
+            String selectedFile = files[position];
+
+            PopupMenu popup = new PopupMenu(requireContext(), view1);
+            popup.getMenu().add("Delete");
+            popup.getMenu().add("Rename");
+
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().equals("Delete")) {
+                    confirmDelete(selectedFile);
+                    return true;
+                } else if (item.getTitle().equals("Rename")) {
+                    showRenameDialog(selectedFile);
+                    return true;
+                }
+                return false;
+            });
+
+            popup.show();
+            return true;
+        });
+    }
+
+    private void showRenameDialog(String selectedFile) {
+        final EditText input = new EditText(requireContext());
+        input.setText(selectedFile);
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Rename Note")
+                .setView(input)
+                .setPositiveButton("Rename", (dialog, which) -> {
+                    String newName = input.getText().toString().trim();
+                    if (!newName.isEmpty() && !newName.equals(selectedFile)) {
+                        if (!newName.endsWith(".md")) newName += ".md";
+                        if (FileUtil.renameNote(requireContext(), notesFolderUri, selectedFile, newName)) {
+                            Toast.makeText(getContext(), "Note renamed", Toast.LENGTH_SHORT).show();
+                            updateFileList();
+                        } else {
+                            Toast.makeText(getContext(), "Rename failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void confirmDelete(String selectedFile) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Delete Note")
+                .setMessage("Are you sure you want to delete '" + selectedFile + "'?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    if (FileUtil.deleteNote(requireContext(), notesFolderUri, selectedFile)) {
+                        Toast.makeText(getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
+                        updateFileList();
+                    } else {
+                        Toast.makeText(getContext(), "Failed to delete note", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     public void updateFileList() {
         if (getContext() == null) return;
 
-        // Always re-read the URI from preferences to handle changes from other fragments
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String uriString = prefs.getString("notes_folder_uri", null);
 
