@@ -15,9 +15,9 @@ Simple Notes the newest the greatest Note taking App **without any AI** and no I
 Simple Notes saves your files in the Markdown (aka .md) format  
 
 **Update plan / future**  
-Version 1.0: the most basic note taking app.  **Completed**  
-Version 1.1: Read and Write Improvement.   **Completed**  
-Version 1.2: More Features : multiple files (Creating them too)
+Version 1.0: the most basic note taking app.  **Released**  
+Version 1.1: Read and Write Improvement.   **Released**  
+Version 1.2: More Features : multiple files (Creating them too) **Released**  
 
 
 Version 1.3: [Not available]
