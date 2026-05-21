@@ -20,7 +20,8 @@ Version 1.1: Read and Write Improvement.   **Released**
 Version 1.2: More Features : multiple files (Creating them too) **Released**  
 
 
-Version 1.3: [Not available]
+Version 1.3: something idk
+Version 1.4: Exporting/Importing Notes
 
 
 **The Update Checker is From Chase6477 thx :>**  
