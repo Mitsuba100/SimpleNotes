@@ -6,11 +6,11 @@
     app:startDestination="@id/selectmenu_fragment">
 
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/action_settings"
         android:name="net.stuple.simplenotes.fragments.SettingsFragment"
         android:label="@string/Settings" >
         <action
-            android:id="@+id/action_settingsFragment_to_noteFragment"
+            android:id="@+id/action_settings_to_noteFragment"
             app:destination="@id/noteFragment" />
     </fragment>
     <fragment
@@ -19,8 +19,8 @@
         android:label="Simple Notes"
         tools:layout="@layout/note_fragment" >
         <action
-            android:id="@+id/action_noteFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_noteFragment_to_settings"
+            app:destination="@id/action_settings" />
     </fragment>
     <fragment
         android:id="@+id/selectmenu_fragment"
@@ -31,4 +31,9 @@
             android:id="@+id/action_selectmenu_fragment_to_noteFragment"
             app:destination="@id/noteFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/action_eolnotice"
+        android:name="net.stuple.simplenotes.fragments.EOL_Notice"
+        android:label="EOL Notice"
+        tools:layout="@layout/fragment_e_o_l__notice" />
 </navigation>

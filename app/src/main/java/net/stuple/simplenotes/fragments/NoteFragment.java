@@ -89,12 +89,10 @@ public class NoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Check if a filename was passed as an argument (from the selector or new note creation)
         String argumentFileName = (getArguments() != null) ? getArguments().getString("filename") : null;
 
         if (notesFolderUri != null) {
             if (argumentFileName != null) {
-                // If we have an argument, find its index in the refreshed list
                 refreshLocalFiles();
                 for (int i = 0; i < files.length; i++) {
                     if (files[i].equals(argumentFileName)) {
@@ -104,7 +102,6 @@ public class NoteFragment extends Fragment {
                 }
                 loadNote(argumentFileName);
             } else {
-                // Default fallback
                 loadNote(files[whatfile]);
             }
         }
@@ -117,6 +114,11 @@ public class NoteFragment extends Fragment {
             if (binding != null) binding.textviewNoteContent.setText("");
             return;
         }
+        
+        // Save this as the current note for Exporting
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        prefs.edit().putString("current_note_name", fileName).apply();
+
         try {
             byte[] content = FileUtil.loadNote(requireContext(), notesFolderUri, fileName);
             if (binding != null) {
@@ -149,48 +151,6 @@ public class NoteFragment extends Fragment {
         }
     }
 
-    private void showFileSelectorDialog() {
-        if (files == null || files.length == 0) {
-            Toast.makeText(getContext(), "No notes found.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Select a Note")
-                .setItems(files, (dialog, which) -> {
-                    whatfile = which;
-                    String selectedFile = files[whatfile];
-                    loadNote(selectedFile);
-                })
-                .show();
-    }
-
-    private void showFileNameDialog() {
-        final EditText input = new EditText(requireContext());
-
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Create New Note")
-                .setView(input)
-                .setPositiveButton("Create", (dialog, which) -> {
-                    String name = input.getText().toString().trim();
-                    if (!name.isEmpty()) {
-                        String fileName = name.endsWith(".md") ? name : name + ".md";
-                        binding.textviewNoteContent.setText("");
-                        saveNote(fileName);
-                        refreshLocalFiles();
-                        for (int i = 0; i < files.length; i++) {
-                            if (files[i].equals(fileName)) {
-                                whatfile = i;
-                                break;
-                            }
-                        }
-                        loadNote(fileName);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
-
     public void refreshLocalFiles() {
         if (notesFolderUri != null) {
             files = FileUtil.refreshLocalFiles(requireContext(), notesFolderUri);
@@ -199,6 +159,9 @@ public class NoteFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        if (files.length > whatfile) {
+            saveNote(files[whatfile]);
+        }
         super.onDestroyView();
         binding = null;
     }

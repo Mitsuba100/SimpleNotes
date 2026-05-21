@@ -38,16 +38,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         navController.addOnDestinationChangedListener((navController1, destination, bundle) -> {
-            if (destination.getId() == R.id.settingsFragment) {
+            // Updated to use the new synchronized ID action_settings
+            if (destination.getId() == R.id.action_settings) {
                 binding.floatingActionButton2.setVisibility(View.GONE);
             } else {
-                binding.floatingActionButton2.setVisibility(View.GONE); // ist so weil ich davor das problem hatte wo es gecrashed ist weil der Button noch immer da war
+                binding.floatingActionButton2.setVisibility(View.GONE); 
             }
         });
 
         binding.floatingActionButton2.setOnClickListener(v -> {
             if (navController.getCurrentDestination().getId() == R.id.noteFragment) {
-                navController.navigate(R.id.action_noteFragment_to_settingsFragment);
+                // Updated to use the new synchronized ID action_settings
+                navController.navigate(R.id.action_settings);
             }
         });
     }
@@ -60,14 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            navController.navigate(R.id.settingsFragment);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
     }
 
     @Override
