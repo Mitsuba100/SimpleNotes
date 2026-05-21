@@ -7,7 +7,7 @@
   </a>
 </p>
 
-# Status: Developent of Version 1.2
+# Status: End-of-Life
 # Simple Notes
 
 Simple Notes the newest the greatest Note taking App **without any AI** and no Internet connection is needed (Exept for update checking)  
